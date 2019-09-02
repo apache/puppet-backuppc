@@ -432,7 +432,7 @@ class backuppc::client (
 
   if $export_keys {
     if $facts['networking']['fqdn'] != $backuppc_hostname {
-      @@sshkey { $facts['networking']['fqdn']:
+      @@sshkey { "bpc-${facts['networking']['fqdn']}":
         ensure => $ensure,
         type   => 'ssh-rsa',
         key    => $facts['ssh']['rsa']['key'],
