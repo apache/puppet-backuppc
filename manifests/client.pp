@@ -423,6 +423,11 @@ class backuppc::client (
       user    => $system_account,
       require => File["${system_home_directory}/.ssh"]
     }
+
+    Ssh_authorized_key <<| tag == "backuppc_${backuppc_hostname}" |>> {
+      user    => $system_account,
+      target  => "/etc/ssh/ssh_keys/${system_account}.pub",
+    }
   }
 
   # if $facts['networking']['fqdn'] != $backuppc_hostname {
