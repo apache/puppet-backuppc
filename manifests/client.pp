@@ -216,6 +216,10 @@
 # useful for running the backup via nice or ionice, in order to reduce the 
 # impact of large backups on the client.
 #
+# [*export_keys*]
+# Do not run the @sshkeys exporter. This can be used for compatibility with
+# other ssh classes which already manage ssh exported keys
+#
 # === Examples
 #
 #  See tests folder.
@@ -290,7 +294,8 @@ class backuppc::client (
   $hosts_file_dhcp       = 0,
   $hosts_file_user       = 'backuppc',
   $hosts_file_more_users = '',
-  $sudo_prepend = '',
+  $sudo_prepend          = '',
+  $export_keys           = true,
     ) {
   include backuppc::params
 
@@ -425,12 +430,14 @@ class backuppc::client (
     }
   }
 
-  if $facts['networking']['fqdn'] != $backuppc_hostname {
-    @@sshkey { $facts['networking']['fqdn']:
-      ensure => $ensure,
-      type   => 'ssh-rsa',
-      key    => $facts['ssh']['rsa']['key'],
-      tag    => "backuppc_sshkeys_${backuppc_hostname}",
+  if $export_keys {
+    if $facts['networking']['fqdn'] != $backuppc_hostname {
+      @@sshkey { $facts['networking']['fqdn']:
+        ensure => $ensure,
+        type   => 'ssh-rsa',
+        key    => $facts['ssh']['rsa']['key'],
+        tag    => "backuppc_sshkeys_${backuppc_hostname}",
+      }
     }
   }
 
