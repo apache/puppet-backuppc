@@ -424,10 +424,16 @@ class backuppc::client (
       require => File["${system_home_directory}/.ssh"]
     }
 
+    file { "/etc/ssh/ssh_keys/${system_account}.pub":
+      ensure  => present,
+      owner   => $system_account,
+      mode    => "0600",
+      require => User[$system_account],
+    } ->
     Ssh_authorized_key <<| tag == "backuppc_${backuppc_hostname}" |>> {
-      user    => $system_account,
-      target  => "/etc/ssh/ssh_keys/${system_account}.pub",
+      target  => "/etc/ssh/ssh_keys/${system_account}.pub"
     }
+
   }
 
   # if $facts['networking']['fqdn'] != $backuppc_hostname {
