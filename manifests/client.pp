@@ -401,6 +401,7 @@ class backuppc::client (
       group  => $system_account,
     }
 
+
     file { "${system_home_directory}/backuppc.sh":
       ensure  => $ensure,
       owner   => 'root',
@@ -410,10 +411,17 @@ class backuppc::client (
       require => User[$system_account],
     }
 
-    Ssh_authorized_key <<| tag == "backuppc_${backuppc_hostname}" |>> {
-      user    => $system_account,
+    file { "/etc/ssh/ssh_keys/${system_account}.pub":
+      ensure  => present,
+      owner   => $system_account,
+      mode    => '0600',
+      require => User[$system_account],
+    } ->
+      Ssh_authorized_key <<| tag == "backuppc_${backuppc_hostname}" |>> {
+      target  => "/etc/ssh/ssh_keys/${system_account}.pub",
       require => File["${system_home_directory}/.ssh"]
     }
+
   }
 
   if $::fqdn != $backuppc_hostname {
