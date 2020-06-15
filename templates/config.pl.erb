@@ -65,15 +65,7 @@ $Conf{BackupFilesOnly} = undef;
 $Conf{BackupFilesExclude} = undef;
 $Conf{BlackoutBadPingLimit} = 3;
 $Conf{BlackoutGoodCnt}      = <%= @blackout_good_cnt %>;
-$Conf{BlackoutPeriods} = [
-<% @blackout_periods.each do |period| -%>
-<% if period.is_a?(Hash) -%>{
-<% period.keys.sort.each do |key| -%>
-  <%= key %>  => <% if period[key].is_a?(Array) %>[<%= period[key].join(', ') %>]<% else %><%= period[key] %><% end %>,
-<% end -%>
-},
-<% end -%>
-<% end -%>];
+$Conf{BlackoutPeriods} = [];
 $Conf{BackupZeroFilesIsFatal} = <%= @real_bzfif %>;
 $Conf{XferMethod} = 'rsync';
 $Conf{XferLogLevel} = 1;
