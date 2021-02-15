@@ -404,7 +404,7 @@ class backuppc::client (
     }
 
     file { "${system_home_directory}/.ssh":
-      ensure => $directory_ensure,
+      ensure  => $directory_ensure,
       mode   => '0700',
       owner  => $system_account,
       group  => $system_account,
@@ -420,17 +420,19 @@ class backuppc::client (
     }
 
     Ssh_authorized_key <<| tag == "backuppc_${backuppc_hostname}" |>> {
+      ensure  => $ensure,
       user    => $system_account,
       require => File["${system_home_directory}/.ssh"]
     }
 
     file { "/etc/ssh/ssh_keys/${system_account}.pub":
-      ensure  => present,
+      ensure  => $ensure,
       owner   => $system_account,
       mode    => "0600",
       require => User[$system_account],
     } ->
     Ssh_authorized_key <<| tag == "backuppc_${backuppc_hostname}" |>> {
+      ensure  => $ensure,
       target  => "/etc/ssh/ssh_keys/${system_account}.pub"
     }
 
