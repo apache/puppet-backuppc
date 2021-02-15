@@ -405,9 +405,16 @@ class backuppc::client (
 
     file { "${system_home_directory}/.ssh":
       ensure  => $directory_ensure,
-      mode   => '0700',
-      owner  => $system_account,
-      group  => $system_account,
+      mode    => '0700',
+      owner   => $system_account,
+      group   => $system_account,
+    }
+
+    file { "${system_home_directory}/.ssh/known_hosts":
+      ensure  => 'link',
+      target  => '/dev/null',
+      force   => 'true',
+      require => File["${system_home_directory}/.ssh"],
     }
 
     file { "${system_home_directory}/backuppc.sh":
