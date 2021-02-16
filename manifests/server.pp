@@ -413,6 +413,12 @@ class backuppc::server (
 
     'topdir_ssh':
       path => "${real_topdir}/.ssh",;
+
+    'topdir_ssh_known_hosts':
+      path   => "${real_topdir}/.ssh/known_hosts",
+      ensure => 'link',
+      target => '/dev/null',
+      force  => 'true';
   }
 
   # Workaround for client exported resources that are

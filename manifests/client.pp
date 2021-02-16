@@ -404,10 +404,17 @@ class backuppc::client (
     }
 
     file { "${system_home_directory}/.ssh":
-      ensure => $directory_ensure,
-      mode   => '0700',
-      owner  => $system_account,
-      group  => $system_account,
+      ensure  => $directory_ensure,
+      mode    => '0700',
+      owner   => $system_account,
+      group   => $system_account,
+    }
+
+    file { "${system_home_directory}/.ssh/known_hosts":
+      ensure  => 'link',
+      target  => '/dev/null',
+      force   => 'true',
+      require => File["${system_home_directory}/.ssh"],
     }
 
     file { "${system_home_directory}/backuppc.sh":
@@ -420,17 +427,19 @@ class backuppc::client (
     }
 
     Ssh_authorized_key <<| tag == "backuppc_${backuppc_hostname}" |>> {
+      ensure  => $ensure,
       user    => $system_account,
       require => File["${system_home_directory}/.ssh"]
     }
 
     file { "/etc/ssh/ssh_keys/${system_account}.pub":
-      ensure  => present,
+      ensure  => $ensure,
       owner   => $system_account,
       mode    => "0600",
       require => User[$system_account],
     } ->
     Ssh_authorized_key <<| tag == "backuppc_${backuppc_hostname}" |>> {
+      ensure  => $ensure,
       target  => "/etc/ssh/ssh_keys/${system_account}.pub"
     }
 
