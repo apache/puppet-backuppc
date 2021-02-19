@@ -302,6 +302,11 @@ class backuppc::client (
     default   => absent,
   }
 
+  $link_ensure = $ensure ? {
+    'present' => 'link',
+    default   => absent,
+  }
+
   if empty($backuppc_hostname) {
     fail('Please provide the hostname of the node that hosts backuppc.')
   }
@@ -411,7 +416,7 @@ class backuppc::client (
     }
 
     file { "${system_home_directory}/.ssh/known_hosts":
-      ensure  => 'link',
+      ensure  => $link_ensure
       target  => '/dev/null',
       force   => 'true',
       require => File["${system_home_directory}/.ssh"],
