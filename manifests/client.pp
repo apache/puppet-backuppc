@@ -416,7 +416,7 @@ class backuppc::client (
     }
 
     file { "${system_home_directory}/.ssh/known_hosts":
-      ensure  => $link_ensure
+      ensure  => $link_ensure,
       target  => '/dev/null',
       force   => 'true',
       require => File["${system_home_directory}/.ssh"],
