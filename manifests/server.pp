@@ -367,7 +367,8 @@ class backuppc::server (
     name      => $backuppc::params::service,
     enable    => $service_enable,
     hasstatus => true,
-    pattern   => 'BackupPC'
+    pattern   => 'BackupPC',
+    restart   => '/usr/bin/systemctl reload backuppc',
   }
 
   file { 'config.pl':
