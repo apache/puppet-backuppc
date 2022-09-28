@@ -262,8 +262,16 @@ class backuppc::server (
   $cgi_admin_user_group       = 'backuppc',
   $cgi_date_format_mmdd       = 1,
   $user_cmd_check_status      = true,
-  $ping_max_msec                = 20
+  $ping_max_msec                = 20,
+  $required_packages          = [ 'python3-certbot-apache' ],
+
 ) inherits backuppc::params  {
+
+  $required_packages.each |String $package| {
+    if !defined(Package[$package]) {
+      ensure_packages([$package],{ ensure => 'latest' })
+    }
+  }
 
   if empty($backuppc_password) {
     fail('Please provide a password for the backuppc user. This is used to login to the web based administration site.')
