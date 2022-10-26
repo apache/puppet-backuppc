@@ -370,6 +370,9 @@ $Conf{RsyncBackupPCPath} = '/usr/libexec/backuppc-rsync/rsync_bpc';
 $Conf{RsyncFullArgsExtra} = [];
 $Conf{RsyncIncrArgsExtra} = [];
 $Conf{RsyncRestoreArgsExtra} = undef;
-$Conf{RsyncSshArgs} = ['-e' '$sshPath -l root'];
+$Conf{RsyncSshArgs} = [
+  '-e',
+  '$sshPath -l root'
+];
 $Conf{RunDir} = '';
 $Conf{SCGIServerPort} = 0;
