@@ -266,8 +266,6 @@ class backuppc::server (
 
 ) inherits backuppc::params  {
 
-  require stdlib
-
   if empty($backuppc_password) {
     fail('Please provide a password for the backuppc user. This is used to login to the web based administration site.')
   }
