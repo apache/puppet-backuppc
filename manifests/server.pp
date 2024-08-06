@@ -271,8 +271,6 @@ class backuppc::server (
   if empty($backuppc_password) {
     fail('Please provide a password for the backuppc user. This is used to login to the web based administration site.')
   }
-  validate_bool($service_enable)
-  validate_bool($apache_require_ssl)
 
   validate_re($ensure, '^(present|absent)$',
   'ensure parameter must have a value of: present or absent')
