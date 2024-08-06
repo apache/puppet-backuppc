@@ -270,51 +270,6 @@ class backuppc::server (
     fail('Please provide a password for the backuppc user. This is used to login to the web based administration site.')
   }
 
-  validate_re($ensure, '^(present|absent)$',
-  'ensure parameter must have a value of: present or absent')
-
-  validate_integer($max_backups)
-  validate_integer($max_user_backups)
-  validate_integer($max_pending_cmds)
-  validate_integer($max_backuppc_nightly_jobs)
-  validate_integer($df_max_usage_pct)
-  validate_integer($max_old_log_files)
-  validate_integer($backuppc_nightly_period)
-  validate_integer($trash_clean_sleep_sec)
-
-  validate_numeric($full_period)
-  validate_numeric($incr_period)
-
-  validate_integer($full_age_max)
-  validate_integer($incr_keep_cnt)
-  validate_integer($incr_age_max)
-  validate_integer($partial_age_max)
-  validate_integer($restore_info_keep_cnt)
-  validate_integer($archive_info_keep_cnt)
-  validate_integer($blackout_good_cnt)
-
-  validate_numeric($email_notify_min_days)
-
-  validate_integer($email_notify_old_backup_days)
-  validate_integer($cgi_date_format_mmdd, 2, 0)
-
-  validate_integer($ping_max_msec)
-
-  validate_array($wakeup_schedule)
-  validate_array($dhcp_address_ranges)
-  validate_array($incr_levels)
-  validate_array($blackout_periods)
-  validate_array($full_keep_cnt)
-
-  validate_hash($email_headers)
-
-  validate_string($apache_allow_from)
-  validate_string($cgi_url)
-  validate_string($cgi_image_dir_url)
-  validate_string($language)
-  validate_string($cgi_admin_user_group)
-  validate_string($cgi_admin_users)
-
   $real_incr_fill = bool2num($incr_fill)
   $real_bzfif     = bool2num($backup_zero_files_is_fatal)
   $real_uccs      = bool2num($user_cmd_check_status)

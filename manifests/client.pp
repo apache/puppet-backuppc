@@ -294,9 +294,6 @@ class backuppc::client (
     ) {
   include backuppc::params
 
-  validate_re($ensure, '^(present|absent)$',
-  'ensure parameter must have a value of: present or absent')
-
   $directory_ensure = $ensure ? {
     'present' => 'directory',
     default   => absent,
@@ -311,14 +308,6 @@ class backuppc::client (
     fail('Please provide the hostname of the node that hosts backuppc.')
   }
 
-  validate_re($xfer_method, '^(smb|rsync|rsyncd|tar)$',
-  'Xfer_method parameter must have value of: smb, rsync, rsyncd or tar')
-  if $blackout_periods != false {
-      validate_array($blackout_periods)
-  }
-  validate_re($xfer_loglevel, '^[0-2]$',
-  'Xfer_loglevel parameter must be a 0, 1 or 2')
-
   $real_incr_fill = bool2num($incr_fill)
   $real_backups_disable = bool2num($backups_disable)
   $real_rsyncd_auth_required = bool2num($rsyncd_auth_required)
@@ -330,7 +319,6 @@ class backuppc::client (
   # parameter.
   if $xfer_method in ['rsync', 'tar'] and ! empty($system_account)
   {
-    validate_absolute_path($system_home_directory)
 
     if $xfer_method == 'rsync' {
       if $manage_rsync {
