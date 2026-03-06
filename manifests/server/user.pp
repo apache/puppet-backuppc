@@ -24,9 +24,6 @@ define backuppc::server::user (
 ) {
   include backuppc::params
 
-  validate_re($ensure, '^(present|absent)$',
-  'ensure parameter must have a value of: present or absent')
-
   $real_username = $username ? {
     undef   => $name,
     default => $username,
